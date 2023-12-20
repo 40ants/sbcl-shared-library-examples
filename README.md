@@ -18,6 +18,7 @@ https://www.msys2.org/
 ```bash
 pacman -S --noconfirm --needed git
 
+# На помент проверки был коммит: 
 git clone git://git.code.sf.net/p/sbcl/sbcl
 
 cd sbcl
@@ -54,7 +55,7 @@ SBCL_SRC=~/sbcl/ make
 Теперь у вас должны появиться `libhello.dll`, `app.exe` и `hello.core`. DLL содержит пару функций `hello-world` и `start-slynk`.
 Lisp версии этих функций описаны в script.lisp, но если кода много, то лучше вынести их в отдельную ASDF system.
 Важно то, что все функции, которые надо сделать вызываемыми из C, должны быть перечислены в аргументе `:callable-exports` функции `sb-ext:save-lisp-and-die`,
-а так же описаны с помощью макроса sb-alien:define-alien-callable. Кроме того, для каждой экспортируемой функции нужно в `hello.c` файл [добавить указатель](https://github.com/40ants/sbcl-shared-library-examples/blob/master/dll-with-slynk/hello.c#L12-L14)
+а так же описаны с помощью макроса `sb-alien:define-alien-callable`. Кроме того, для каждой экспортируемой функции нужно в `hello.c` файл [добавить указатель](https://github.com/40ants/sbcl-shared-library-examples/blob/master/dll-with-slynk/hello.c#L12-L14)
 а в `hello.h` [декларацию](https://github.com/40ants/sbcl-shared-library-examples/blob/master/dll-with-slynk/hello.h#L26-L27).
 
 После запуска `app.exe`, приложение начинает ждать подключения SLY на порту 4005:
@@ -72,3 +73,11 @@ Waiting for connection
 Waiting for connection
 Waiting for connection
 ```
+
+# Известные проблемы
+
+Программа часто крэшится. Особенно при попытке загрузить жирные библиотеки прямо в REPL. Лучше загружать их при сборке `core` файла. Например в `script.lisp` есть загрузка `dexador` с помощью `quicklisp`.
+
+# Дальнейшие шаги
+
+Стоит попробовать допилить [sbcl-librarian](https://github.com/quil-lang/sbcl-librarian), так как это избавит от необходимости вручную описывать врапперы в `hello.c` и `hello.h` файлах, а так же будет делать и враппер либы для Python.
