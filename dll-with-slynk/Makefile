@@ -6,7 +6,7 @@ all: app
 
 libhello.dll: hello.c hello.h libhello.core
 	$(CC) -fPIC -c $(CPPFLAGS) $(filter-out -fno-pie,$(CFLAGS)) hello.c -o hello.o 
-	gcc -shared -o libhello.dll hello.o -Wl,--allow-multiple-definition -Wl,--whole-archive $(SBCL_SRC)/src/runtime/libsbcl.a -Wl,--no-whole-archive -Wl,--export-all-symbols -Wl,$(SBCL_SRC)/src/runtime/mswin64.def -l ws2_32 -ladvapi32 -lSynchronization  -lm
+	gcc -shared -o libhello.dll hello.o -Wl,--allow-multiple-definition -Wl,--whole-archive $(SBCL_SRC)/src/runtime/libsbcl.a -Wl,--no-whole-archive -Wl,--export-all-symbols -Wl,$(SBCL_SRC)/src/runtime/mswin64.def $(LIBS)
 
 app: app.c libhello.dll
 	$(CC) -fPIC -c $(CPPFLAGS) $(filter-out -fno-pie,$(CFLAGS)) app.c -o app.o 
