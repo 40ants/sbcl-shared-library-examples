@@ -18,7 +18,8 @@ https://www.msys2.org/
 ```bash
 pacman -S --noconfirm --needed git
 
-# На помент проверки был коммит: 
+# На момент проверки был коммит:
+# f62e9659384f25dfeb416d707301ef5175f68702
 git clone git://git.code.sf.net/p/sbcl/sbcl
 
 cd sbcl
